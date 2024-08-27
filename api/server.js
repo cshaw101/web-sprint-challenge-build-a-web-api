@@ -3,7 +3,7 @@ const server = express();
 const projectsRouter = require('./projects/projects-router')
 // Configure your server here
 server.use(express.json());
-server.use('/projects', projectsRouter)
+server.use('/api/projects', projectsRouter)
 
 server.get('/', (req, res) => {
     res.send('Hello, im Working!');
