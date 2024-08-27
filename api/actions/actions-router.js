@@ -1,7 +1,7 @@
 // Write your "actions" router here!
 const express = require('express');
 const Actions = require('./actions-model')
-const { validateUserId, validateProjectId } = require('./actions-middlware')
+const { validateActionId, validateProjectId } = require('./actions-middlware')
 
 
 const router = express.Router()
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', validateUserId, async (req, res) => {
+router.get('/:id', validateActionId, async (req, res) => {
     res.status(200).json(req.action);
 })
 
@@ -45,6 +45,46 @@ router.post('/',validateProjectId, async (req, res) => {
     }
 })
 
+router.put('/:id', validateActionId, validateProjectId, async (req,res) => {
+    const { notes, description, completed, project_id } = req.body;
+
+    if (notes === undefined || description === undefined || completed === undefined || project_id === undefined) {
+        return res.status(400).json({ message: "Please include notes, description, project_id, and completed fields" });
+    }
+
+    try {
+        const updatedAction = await Actions.update(req.params.id, { notes, description, completed, project_id });
+
+        if (updatedAction) {
+            return res.status(200).json(updatedAction);
+        } else {
+            return res.status(404).json({ message: "Action not found" });
+        }
+    } catch (err) {
+        return res.status(500).json({
+            message: "Error updating action",
+            error: err.message,
+        });
+    }
+});
+
+
+
+router.delete('/:id',validateActionId, async (req,res) => {
+    try{
+        const deletedAction = await Actions.remove(req.params.id);
+        if (deletedAction) {
+            res.status(200).json({ message: "Action deleted successfully" });
+        }else {
+            res.status(404).json({ message: "Action not found" });
+        }
+    }catch(err) {
+        return res.status(500).json({
+            message: "Error deleting action",
+            error: err.message,
+        });
+    }
+})
 
 
 

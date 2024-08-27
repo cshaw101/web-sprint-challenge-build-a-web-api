@@ -2,7 +2,7 @@
 const Actions = require('./actions-model')
 const Projects = require('../projects/projects-model')
 
-async function validateUserId(req, res, next) {
+async function validateActionId(req, res, next) {
     try {
         const { id } = req.params;
         const action = await Actions.get(id);
@@ -41,4 +41,4 @@ async function validateUserId(req, res, next) {
       }
   }
   
-  module.exports = { validateProjectId, validateUserId };
+  module.exports = { validateProjectId, validateActionId };
