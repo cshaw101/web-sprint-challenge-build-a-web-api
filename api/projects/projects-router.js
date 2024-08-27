@@ -80,8 +80,20 @@ try {
 }
 })
 
-router.get('/:id/actions', (req, res) => {
-    
+router.get('/:id/actions',validateUserId, async (req, res) => {
+    try {
+        const projectActions = await Projects.getProjectActions(req.params.id)
+
+        if (!projectActions) {
+            return res.status(404).json({
+                message:'cant get those posts yet...'
+            })
+        }else {
+            return res.status(200).json(projectActions)
+        }
+    }catch(err) {
+
+    }
 })
 
 
