@@ -7,15 +7,16 @@ async function validateUserId(req, res, next) {
         const project = await Projects.get(id);
   
         if (project) {
-            req.project = project; // set the correct variable name
+            req.project = project; 
             next();
         } else {
-            return res.status(404).json({ message: "Project not found" }); // adjusted error message
+            return res.status(404).json({ message: "Project not found" }); 
         }
     } catch (err) {
-        return res.status(500).json({ message: "Error retrieving project", error: err.message }); // adjusted error message
+        return res.status(500).json({ message: "Error retrieving project", error: err.message }); 
     }
 }
+
 
 
   module.exports = {validateUserId}
